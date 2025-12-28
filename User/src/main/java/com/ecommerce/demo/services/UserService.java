@@ -57,7 +57,7 @@ public class UserService {
 
     }
 
-    public Optional<UserResponse> fetchUserById(Long id) {
+    public Optional<UserResponse> fetchUserById(String id) {
 //        for (User user : users) {
 //            if (user.getId().equals(id)) {
 //                return user;
@@ -69,8 +69,8 @@ public class UserService {
                 .map(this::mapToUserResponse);
     }
 
-    public boolean updateUserById(Long id,UserRequest updatedUserRequest) {
-        return userRepository.findById(id)
+    public boolean updateUserById(String id,UserRequest updatedUserRequest) {
+        return userRepository.findById(String.valueOf(id))
                 .map(user -> {
                    updateUserRequest(user,updatedUserRequest);
                     userRepository.save(user);
