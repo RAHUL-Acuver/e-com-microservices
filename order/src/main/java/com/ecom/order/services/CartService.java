@@ -1,6 +1,8 @@
 package com.ecom.order.services;
 
+//import com.ecom.order.clients.ProductServiceClient;
 import com.ecom.order.dtos.CartItemRequest;
+import com.ecom.order.dtos.ProductResponse;
 import com.ecom.order.models.CartItem;
 //import com.example.model.Product;
 //import com.example.model.User;
@@ -21,9 +23,13 @@ public class CartService {
 
     private final CartItemRepository cartItemRepository;
 
+   // private final ProductServiceClient productServiceClient;
+
     //private final UserRepository userRepository;
 
     public boolean addToCart(String userId, CartItemRequest request) {
+        //ProductResponse  productResponse=productServiceClient.getProductDetails(request.getProductId());
+
 //        Optional<Product> productOpt = productRepository.findById(request.getProductId());
 //        if (productOpt.isEmpty())
 //            return false;
@@ -51,7 +57,7 @@ public class CartService {
             {
                 CartItem cartItem = new CartItem();
                 cartItem.setUserId(userId);
-                cartItem.setProductId(request.getProductId());
+                cartItem.setProductId(String.valueOf(request.getProductId()));
                 cartItem.setQuantity(request.getQuantity());
                 cartItem.setPrice(BigDecimal.valueOf(1000.00));
                 cartItemRepository.save(cartItem);
