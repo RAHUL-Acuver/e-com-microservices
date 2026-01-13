@@ -1,15 +1,20 @@
 package com.ecom.order.services;
 
 import com.ecom.order.clients.ProductServiceClient;
+import com.ecom.order.clients.UserServiceClient;
 import com.ecom.order.dtos.CartItemRequest;
 import com.ecom.order.dtos.ProductResponse;
+import com.ecom.order.dtos.UserResponse;
 import com.ecom.order.models.CartItem;
 //import com.example.model.Product;
 //import com.example.model.User;
 import com.ecom.order.repositories.CartItemRepository;
 //import com.example.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,6 +25,7 @@ import java.util.Optional;
 public class CartService {
 
    // private final ProductRepository productRepository;
+   private final UserServiceClient userServiceClient;
 
     private final CartItemRepository cartItemRepository;
 
@@ -41,6 +47,52 @@ public class CartService {
         if (productResponse.getQuantity() < request.getQuantity())
             return false;
 
+//        UserResponse userResponse= userServiceClient.getUserById(Long.valueOf(userId)).getBody();
+//        if (userResponse==null){
+//            return false;
+//        }
+
+       UserResponse userResponse= userServiceClient.getUserDetails(userId);
+       if(userResponse==null){
+           return false;
+       }
+
+
+//---------------------------------------------------------------------------
+//        ProductResponse product;
+//        try {
+//            product = productServiceClient.getProductDetails(productId);
+//        } catch (Exception ex) {
+//            throw new RuntimeException("Product service unavailable or product not found");
+//        }
+//
+//        // 2️⃣ Validate product
+//        if (!product.isActive()) {
+//            throw new IllegalStateException("Product is inactive");
+//        }
+//
+//        if (product.getQuantity() < quantity) {
+//            throw new IllegalStateException("Insufficient product quantity");
+//        }
+//
+//        // 3️⃣ Create cart item
+//        Cart cart = new Cart();
+//        cart.setUserId(userId);
+//        cart.setProductId(productId);
+//        cart.setQuantity(quantity);
+//        cart.setPrice(product.getPrice());
+//
+//        Cart savedCart = cartRepository.save(cart);
+//
+//        // 4️⃣ Return response
+//        return CartResponse.builder()
+//                .cartId(savedCart.getId())
+//                .productId(productId)
+//                .quantity(quantity)
+//                .price(product.getPrice())
+//                .build();
+//    }
+        //--------------------------------------------------------------
 //        Optional<User> userOpt = userRepository.findById(Long.valueOf(userId));
 //        if (userOpt.isEmpty())
 //            return false;
