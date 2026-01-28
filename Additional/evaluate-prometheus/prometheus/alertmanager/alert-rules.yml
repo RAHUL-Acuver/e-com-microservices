@@ -1,0 +1,31 @@
+groups:
+  - name: product-service-alerts
+    rules:
+
+      - alert: ProductServiceDown
+        expr: up{job="product-service"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Product service is DOWN"
+          description: "Product service is not reachable for more than 30 seconds"
+
+      - alert: ProductServiceHighErrorRate
+        expr: rate(http_server_requests_seconds_count{job="product-service",status=~"5.."}[1m]) > 0.05
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate in Product service"
+          description: "Product service is returning too many 5xx errors"
+
+      - alert: ProductServiceDatabaseFailure
+        expr: increase(jdbc_connections_failed_total{job="product-service"}[1m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+          service: product-service
+        annotations:
+          summary: "Database connection issue in Product service"
+          description: "Product service cannot connect to database"

@@ -86,10 +86,13 @@ services:
   prometheus:
     image: prom/prometheus:v2.44.0
     container_name: prometheus
+#    command:
+#      - "--config.file=/etc/prometheus.yml"
     ports:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alertmanager/alert-rules.yml:/etc/prometheus/alert-rules.yml
     networks:
       - loki
 
@@ -220,3 +223,12 @@ services:
     command: -f json -d 200ms -l
     networks:
       - loki
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: alertmanager
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./prometheus/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml

@@ -1,0 +1,21 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: "slack-notifications"
+  group_by: ["alertname", "service"]
+  group_wait: 10s
+  group_interval: 30s
+  repeat_interval: 1h
+
+receivers:
+  - name: "slack-notifications"
+    slack_configs:
+      - api_url: "https://hooks.slack.com/services/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"
+        channel: "#alerts"
+        title: "{{ .CommonAnnotations.summary }}"
+        text: >-
+          {{ range .Alerts }}
+          *Description:* {{ .Annotations.description }}
+          *Severity:* {{ .Labels.severity }}
+          {{ end }}

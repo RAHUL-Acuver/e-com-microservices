@@ -3,9 +3,16 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+# Ignore everything inside Additional
 Additional/*
+
+# Allow these two folders
 !Additional/evaluate-loki/
+!Additional/evaluate-prometheus/
+
+# Allow everything inside them
 !Additional/evaluate-loki/**
+!Additional/evaluate-prometheus/**
 
 
 
